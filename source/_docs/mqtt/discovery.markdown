@@ -12,29 +12,31 @@ Supported by MQTT discovery:
 - [Binary sensors](/integrations/binary_sensor.mqtt/)
 - [Cameras](/integrations/camera.mqtt/)
 - [Covers](/integrations/cover.mqtt/)
+- [Device Trackers](/integrations/device_tracker.mqtt/)
 - [Device Triggers](/integrations/device_trigger.mqtt/)
 - [Fans](/integrations/fan.mqtt/)
 - [HVACs](/integrations/climate.mqtt/)
 - [Lights](/integrations/light.mqtt/)
 - [Locks](/integrations/lock.mqtt/)
+- [Scenes](/integrations/scene.mqtt/)
 - [Sensors](/integrations/sensor.mqtt/)
 - [Switches](/integrations/switch.mqtt/)
+- [Tag Scanners](/integrations/tag.mqtt/)
 - [Vacuums](/integrations/vacuum.mqtt/)
 
-To enable MQTT discovery, add the following to your `configuration.yaml` file:
+MQTT discovery is enabled by default. To disable MQTT discovery, add the following to your `configuration.yaml` file:
 
 ```yaml
 # Example configuration.yaml entry
 mqtt:
-  discovery: true
-  discovery_prefix: homeassistant
+  discovery: false
 ```
 
 {% configuration %}
 discovery:
   description: If the MQTT discovery should be enabled or not.
   required: false
-  default: false
+  default: true
   type: boolean
 discovery_prefix:
   description: The prefix for the discovery topic.
@@ -42,12 +44,6 @@ discovery_prefix:
   default: homeassistant
   type: string
 {% endconfiguration %}
-
-<div class='note'>
-
-The [embedded MQTT broker](/docs/mqtt/broker#embedded-broker) does not save any messages between restarts. If you use the embedded MQTT broker you have to send the MQTT discovery messages after every Home Assistant restart for the devices to show up.
-
-</div>
 
 The discovery topic need to follow a specific format:
 
@@ -71,6 +67,7 @@ In the value of configuration variables ending with `_topic`, `~` will be replac
 Configuration variable names in the discovery payload may be abbreviated to conserve memory when sending a discovery message from memory constrained devices.
 
 Supported abbreviations:
+
 ```txt
     'act_t':               'action_topic',
     'act_tpl':             'action_template',
@@ -78,6 +75,7 @@ Supported abbreviations:
     'aux_cmd_t':           'aux_command_topic',
     'aux_stat_tpl':        'aux_state_template',
     'aux_stat_t':          'aux_state_topic',
+    'avty'                 'availability',
     'avty_t':              'availability_topic',
     'away_mode_cmd_t':     'away_mode_command_topic',
     'away_mode_stat_tpl':  'away_mode_state_template',
@@ -137,9 +135,10 @@ Supported abbreviations:
     'hs_val_tpl':          'hs_value_template',
     'ic':                  'icon',
     'init':                'initial',
-    'json_attr':           'json_attributes',
     'json_attr_t':         'json_attributes_topic',
     'json_attr_tpl':       'json_attributes_template',
+    'max_mirs':            'max_mireds',
+    'min_mirs':            'min_mireds',
     'max_temp':            'max_temp',
     'min_temp':            'min_temp',
     'mode_cmd_t':          'mode_command_topic',
@@ -254,6 +253,7 @@ Supported abbreviations:
 ```
 
 Supported abbreviations for device registry configuration:
+
 ```txt
     'cns':                 'connections',
     'ids':                 'identifiers',
@@ -263,22 +263,27 @@ Supported abbreviations for device registry configuration:
     'sw':                  'sw_version',
 ```
 
-### Support by third-party tools
+## Support by third-party tools
 
 The following software has built-in support for MQTT discovery:
 
-- [Tasmota](https://github.com/arendst/Tasmota) (starting with 5.11.1e)
+- [Arilux AL-LC0X LED controllers](https://github.com/mertenats/Arilux_AL-LC0X)
 - [ESPHome](https://esphome.io)
 - [ESPurna](https://github.com/xoseperez/espurna)
-- [Arilux AL-LC0X LED controllers](https://github.com/mertenats/Arilux_AL-LC0X)
+- [IOTLink](https://iotlink.gitlab.io) (starting with 2.0.0)
+- [MiFlora MQTT Daemon](https://github.com/ThomDietrich/miflora-mqtt-daemon)
+- [OpenMQTTGateway](https://github.com/1technophile/OpenMQTTGateway)
 - [room-assistant](https://github.com/mKeRix/room-assistant) (starting with 1.1.0)
+- [SmartHome](https://github.com/roncoa/SmartHome)
+- [Tasmota](https://github.com/arendst/Tasmota) (starting with 5.11.1e, development halted)
+- [WyzeSense2MQTT](https://github.com/raetha/wyzesense2mqtt)
+- [Xiaomi DaFang Hacks](https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks)
 - [Zigbee2mqtt](https://github.com/koenkk/zigbee2mqtt)
 - [Zwave2Mqtt](https://github.com/OpenZWave/Zwave2Mqtt) (starting with 2.0.1)
-- [IOTLink](https://iotlink.gitlab.io) (starting with 2.0.0)
 
-### Examples
+## Examples
 
-#### Motion detection (binary sensor)
+### Motion detection (binary sensor)
 
 A motion detection device which can be represented by a [binary sensor](/integrations/binary_sensor.mqtt/) for your garden would send its configuration as JSON payload to the Configuration topic. After the first message to `config`, then the MQTT messages sent to the state topic will update the state in Home Assistant.
 
@@ -289,21 +294,22 @@ A motion detection device which can be represented by a [binary sensor](/integra
 To create a new sensor manually. For more details please refer to the [MQTT testing section](/docs/mqtt/testing/).
 
 ```bash
-$ mosquitto_pub -h 127.0.0.1 -p 1883 -t "homeassistant/binary_sensor/garden/config" -m '{"name": "garden", "device_class": "motion", "state_topic": "homeassistant/binary_sensor/garden/state"}'
+mosquitto_pub -h 127.0.0.1 -p 1883 -t "homeassistant/binary_sensor/garden/config" -m '{"name": "garden", "device_class": "motion", "state_topic": "homeassistant/binary_sensor/garden/state"}'
 ```
+
 Update the state.
 
 ```bash
-$ mosquitto_pub -h 127.0.0.1 -p 1883 -t "homeassistant/binary_sensor/garden/state" -m ON
+mosquitto_pub -h 127.0.0.1 -p 1883 -t "homeassistant/binary_sensor/garden/state" -m ON
 ```
 
 Delete the sensor by sending an empty message.
 
  ```bash
-$ mosquitto_pub -h 127.0.0.1 -p 1883 -t "homeassistant/binary_sensor/garden/config" -m ''
+mosquitto_pub -h 127.0.0.1 -p 1883 -t "homeassistant/binary_sensor/garden/config" -m ''
 ```
 
-#### Sensors with multiple values
+### Sensors with multiple values
 
 Setting up a sensor with multiple measurement values requires multiple consecutive configuration topic submissions.
 
@@ -313,7 +319,7 @@ Setting up a sensor with multiple measurement values requires multiple consecuti
 - Configuration payload no2: `{"device_class": "humidity", "name": "Humidity", "state_topic": "homeassistant/sensor/sensorBedroom/state", "unit_of_measurement": "%", "value_template": "{% raw %}{{ value_json.humidity}}{% endraw %}" }`
 - Common state payload: `{ "temperature": 23.20, "humidity": 43.70 }`
 
-#### Switches
+### Switches
 
 Setting up a switch is similar but requires a `command_topic` as mentioned in the [MQTT switch documentation](/integrations/switch.mqtt/).
 
@@ -323,16 +329,17 @@ Setting up a switch is similar but requires a `command_topic` as mentioned in th
 - Payload:  `{"name": "garden", "command_topic": "homeassistant/switch/irrigation/set", "state_topic": "homeassistant/switch/irrigation/state"}`
 
 ```bash
-$ mosquitto_pub -h 127.0.0.1 -p 1883 -t "homeassistant/switch/irrigation/config" \
+mosquitto_pub -h 127.0.0.1 -p 1883 -t "homeassistant/switch/irrigation/config" \
   -m '{"name": "garden", "command_topic": "homeassistant/switch/irrigation/set", "state_topic": "homeassistant/switch/irrigation/state"}'
 ```
+
 Set the state.
 
 ```bash
-$ mosquitto_pub -h 127.0.0.1 -p 1883 -t "homeassistant/switch/irrigation/set" -m ON
+mosquitto_pub -h 127.0.0.1 -p 1883 -t "homeassistant/switch/irrigation/set" -m ON
 ```
 
-#### Abbreviating topic names
+### Abbreviating topic names
 
 Setting up a switch using topic prefix and abbreviated configuration variable names to reduce payload length.
 
@@ -341,7 +348,7 @@ Setting up a switch using topic prefix and abbreviated configuration variable na
 - State topic: `homeassistant/switch/irrigation/state`
 - Configuration payload: `{"~": "homeassistant/switch/irrigation", "name": "garden", "cmd_t": "~/set", "stat_t": "~/state"}`
 
-#### Lighting
+### Lighting
 
 Setting up a [light that takes JSON payloads](/integrations/light.mqtt/#json-schema), with abbreviated configuration variable names:
 
@@ -363,7 +370,7 @@ Setting up a [light that takes JSON payloads](/integrations/light.mqtt/#json-sch
   }
   ```
 
-#### Climate control
+### Climate control
 
 Setting up a climate integration (heat only):
 
@@ -400,4 +407,37 @@ Setting up a climate integration (heat only):
   "target_temp":"21.50",
   "current_temp":"23.60",
 }
+```
+
+### Presence detection (device tracker)
+
+Setting up a device tracker:
+
+- Configuration topic: `homeassistant/device_tracker/paulus/config`
+- Example configuration payload:
+
+```json
+{
+  "name":"Paulus",
+  "state_topic": "homeassistant/device_tracker/paulus/state",
+  "payload_home": "home",
+  "payload_not_home": "not_home",
+  "source_type": "bluetooth",
+ }
+```
+
+- State topic: `homeassistant/device_tracker/paulus/state`
+- Example state payload: `home` or `not_home` or `location name`
+
+If the device supports gps co-ordinates then they can be sent to Home Assistant by specifying an attributes topic (i.e. "json_attributes_topic") in the configuration payload:
+
+- Attributes topic: `homeassistant/device_tracker/paulus/attributes`
+- Example attributes payload:
+
+```json
+{
+  "latitude": 32.87336,
+  "longitude": -117.22743,
+  "gps_accuracy": 1.2,
+ }
 ```

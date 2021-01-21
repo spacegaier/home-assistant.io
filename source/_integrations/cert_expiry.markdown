@@ -12,7 +12,7 @@ ha_codeowners:
 ha_domain: cert_expiry
 ---
 
-The `cert_expiry` sensor fetches information from a configured URL and displays the certificate expiry in days.
+The `cert_expiry` integration fetches the certificate from a configured host and displays its expiration in a timestamp sensor.
 
 ## Configuration
 

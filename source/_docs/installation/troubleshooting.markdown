@@ -1,7 +1,6 @@
 ---
 title: "Troubleshooting installation problems"
 description: "Common installation problems and their solutions."
-redirect_from: /getting-started/troubleshooting/
 ---
 
 It can happen that you run into trouble while installing Home Assistant. This page is here to help you solve the most common problems.
@@ -32,7 +31,7 @@ In newer Linux distributions the access to a host is very limited. This means th
 
 To fix this you will need to open your machine's firewall for TCP traffic to port 8123. The method for doing this will vary depending on your operating system and the firewall you have installed. Below are some suggestions to try. Google is your friend here.
 
-For UFW systems (Ubuntu, Debian, Raspbian, etc.):
+For UFW systems (Ubuntu, Debian, Raspberry Pi OS, etc.):
 
 ```bash
 sudo ufw allow 8123/tcp

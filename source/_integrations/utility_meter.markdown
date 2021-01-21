@@ -39,7 +39,7 @@ source:
   required: true
   type: string
 cycle:
-  description: How often to reset the counter. Valid values are `hourly`, `daily`, `weekly`, `monthly`, `quarterly` and `yearly`.
+  description: How often to reset the counter. Valid values are `quarter-hourly`, `hourly`, `daily`, `weekly`, `monthly`, `bimonthly`, `quarterly` and `yearly`. Cycle value `bimonthly` will reset the counter once in two months.
   required: true
   type: string
 offset:
@@ -163,7 +163,7 @@ When using the [DSMR component](/integrations/dsmr) to get data from the utility
 If you want to create a daily and monthly sensor for each tariff, you have to track separate sensors:
 
 - `sensor.energy_consumption_tarif_1` for tarif 1 power (for example off-peak)
-- `sensor.energy_consumption_tarif_2` for for tarif 2 power (for example peak)
+- `sensor.energy_consumption_tarif_2` for tarif 2 power (for example peak)
 - `sensor.gas_consumption` for gas consumption
 
 So, tracking daily and monthly consumption for each sensor, will require setting up 6 entries under the `utility_meter` component.
@@ -193,6 +193,7 @@ utility_meter:
 Additionally, you can add template sensors to compute daily and monthly total usage.
 
 {% raw %}
+
 ```yaml
 sensor:
   - platform: template
@@ -206,4 +207,5 @@ sensor:
         unit_of_measurement: kWh
         value_template: "{{ states('sensor.monthly_energy_offpeak')|float + states('sensor.monthly_energy_peak')|float }}"
 ```
+
 {% endraw %}

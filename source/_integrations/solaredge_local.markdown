@@ -19,11 +19,12 @@ Only specific models support the local API. The local API is available on invert
 You can check if the local API works by finding the IP address of your inverter and visiting it in a browser. If it supports the local API, you'll see a HTML page with the SolarEdge logo and a "Commissioning" menu. 
 
 <div class='note'>
+
+Recent firmware updates have disabled the local API on many inverters. Please enter the IP address of your inverter in a browser before attempting to use this component. If the local API is enabled, you'll see a web page with the SolarEdge logo and a "Commissioning" menu. See [this issue](https://github.com/jbuehl/solaredge/issues/124) and [this issue](https://github.com/drobtravels/solaredge-local/issues/24) for additional details.
   
 If your inverter does not support the local API, you can use the [cloud based version](/integrations/solaredge/)
 
 </div>
-
 
 ## Configuration
 
@@ -63,6 +64,7 @@ sensor:
 In case you would like to convert the values for example to kWh instead of the default Wh, you can use the [template platform](/integrations/template).
 
 {% raw %}
+
 ```yaml
 # Example configuration.yaml entry for sensor template platform
 sensor:
@@ -73,4 +75,5 @@ sensor:
         unit_of_measurement: 'KWh'
         icon_template: "mdi:solar-power"
 ```
+
 {% endraw %}
