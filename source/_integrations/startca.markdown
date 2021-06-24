@@ -6,13 +6,15 @@ ha_category:
 ha_release: 0.64
 ha_iot_class: Cloud Polling
 ha_domain: startca
+ha_platforms:
+  - sensor
 ---
 
 Integrate your [Start.ca](https://www.start.ca/) account information into Home Assistant.
 
 ## Setup
 
-You can get your API key from: [Start.ca Usage API](https://www.start.ca/support/usage/api)
+You can get your API key from: [Start.ca Usage API](https://www.start.ca/account/usage/api)
 
 ## Configuration
 

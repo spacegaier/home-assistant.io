@@ -12,6 +12,11 @@ ha_quality_scale: platinum
 ha_codeowners:
   - '@fredrike'
 ha_domain: daikin
+ha_zeroconf: true
+ha_platforms:
+  - climate
+  - sensor
+  - switch
 ---
 
 The `daikin` integration integrates Daikin air conditioning systems into Home Assistant.
@@ -37,9 +42,7 @@ There is currently support for the following device types within Home Assistant:
   
 </div>
 
-## Configuration
-
-The Daikin integration can be configured via the Home Assistant user interface where it will let you enter the IP-address of your Daikin AC (SKYFi based devices need to provide a password and BRP072Cxx devices need to provide a key).
+{% include integrations/config_flow.md %}
 
 <div class='note'>
   
@@ -112,7 +115,7 @@ Zones with the name `-` will be ignored, just as the AirBase application is work
 
 </div>
 
-Additionally the Daikin Streamer (air purifier) function can be toggled on supported devices using a switch.
+Additionally the Daikin Streamer (air purifier) function can be toggled onsupported devices using a switch. Note that it isn't currently possible to reliably detect whether a specific device has streamer support, so the switch may appear in the UI even if the functionality isn't actually supported.
 
 ## Region Changing
 

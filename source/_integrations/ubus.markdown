@@ -6,6 +6,10 @@ ha_category:
 ha_release: 0.7.6
 ha_iot_class: Local Polling
 ha_domain: ubus
+ha_platforms:
+  - device_tracker
+ha_codeowners:
+  - '@noltari'
 ---
 
 This is a presence detection scanner for [OpenWrt](https://openwrt.org/) using [ubus](https://wiki.openwrt.org/doc/techref/ubus). It scans for changes in `hostapd.*`, which will detect and report changes in devices connected to the access point on the router.
@@ -64,7 +68,7 @@ host:
   required: true
   type: string
 username:
-  description: The username of an user with administrative privileges, usually `root`.
+  description: The username of a user with administrative privileges, usually `root`.
   required: true
   type: string
 password:

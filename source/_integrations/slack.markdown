@@ -8,6 +8,8 @@ ha_domain: slack
 ha_iot_class: Cloud Push
 ha_codeowners:
   - '@bachya'
+ha_platforms:
+  - notify
 ---
 
 The `slack` platform allows you to deliver notifications from Home Assistant to [Slack](https://slack.com/).
@@ -19,7 +21,7 @@ The `slack` platform allows you to deliver notifications from Home Assistant to 
 1. Create a [new app](https://api.slack.com/apps) under your Slack.com account.
 2. Click the `OAuth & Permissions` link in the sidebar, under the Features heading.
 3. In the Scopes section, add the `chat:write` scope, `Send messages as user`. If you get a `missing_scope` error when trying to send a message, check these permissions.
-4. Scroll up to `OAuth Tokens & Redirect URLs` and click `Install App`.
+4. Scroll up to `OAuth Tokens & Redirect URLs` and click `Add to Workspace`.
 5. Copy your `OAuth Access Token` and put that key into your `configuration.yaml` file -- see below.
 
 <div class='note'>
@@ -44,7 +46,7 @@ notify:
   - name: NOTIFIER_NAME
     platform: slack
     api_key: YOUR_API_KEY
-    default_channel: '#general'
+    default_channel: "#general"
 ```
 
 {% configuration %}

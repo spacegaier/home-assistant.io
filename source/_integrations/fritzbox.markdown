@@ -10,6 +10,14 @@ ha_release: 0.68
 ha_iot_class: Local Polling
 ha_domain: fritzbox
 ha_config_flow: true
+ha_ssdp: true
+ha_platforms:
+  - binary_sensor
+  - climate
+  - sensor
+  - switch
+ha_codeowners:
+  - '@mib1185'
 ---
 
 The AVM FRITZ!SmartHome integration for Home Assistant allows you to integrate [FRITZ!DECT](https://en.avm.de/products/fritzdect/) devices like switches, sensors and thermostats.
@@ -32,45 +40,11 @@ There is currently support for the following device types within Home Assistant:
 - [FRITZ!DECT 301](https://en.avm.de/products/fritzdect/fritzdect-301/)
 - [Eurotronic Comet DECT](https://eurotronic.org/produkte/elektronische-heizkoerperthermostate/sparmatic-comet/)
 
-## Configuration
+{% include integrations/config_flow.md %}
 
-To add the AVM FRITZ!SmartHome integration to your installation, go to **Configuration** -> **Integrations** in the UI, click the button with `+` sign and from the list of integrations select **AVM FRITZ! SmartHome**.
-
-If you have enabled SSDP discovery, it’s likely that you just have to confirm the detected device with username and password.
-
-### Configuration via YAML
-
-YAML configuration is still around for people that prefer YAML, but it's deprecated and you should not use it anymore.
-
-```yaml
-# Example configuration.yaml entry
-fritzbox:
-  devices:
-    - password: YOUR_PASSWORD
-```
-
-
-{% configuration %}
-devices:
-  description: A list of FRITZ! devices.
-  type: map
-  keys:
-    host:
-      description: The hostname or IP address of the FRITZ!Box. (e.g. fritz.box or 192.168.178.1)
-      required: false
-      type: string
-      default: fritz.box
-    username:
-      description: The username for Smart Home access. **(User needs "Smart Home" persmission!)** 
-      required: false
-      type: string
-      default: admin
-    password:
-      description: The password of the user.
-      required: true
-      type: string
-{% endconfiguration %}
-
+<div class='note'>
+The configuration in the UI asks for a username. Starting from FRITZ!OS 7.24 the FRITZ!Box creates a random username for the admin user if you didn't set one yourself. This can be found after logging into the FRITZ!Box and visiting System -> FRITZ!Box Users -> Users. The username starts with "fritz" followed by four random numbers. Under properties on the right it says "created automatically". Prior to FRITZ!OS 7.24 the default username was "admin".
+</div>
 
 ## Switches & Thermostats
 

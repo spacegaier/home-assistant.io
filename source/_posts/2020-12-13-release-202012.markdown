@@ -7,7 +7,9 @@ date_formatted: "December 13, 2020"
 author: Franck Nijhof
 author_twitter: frenck
 comments: true
-categories: Release-Notes
+categories:
+- Release-Notes
+- Core
 og_image: /images/blog/2020-12/social.png
 ---
 
@@ -139,7 +141,8 @@ For example:
 ```yaml
 action:
   service: tts.cloud_say
-  entity_id: media_player.family_room_speaker
+  target:
+    entity_id: media_player.family_room_speaker
   data:
     message: These new voices sound absolutely stunning!
     options:

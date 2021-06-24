@@ -8,6 +8,8 @@ ha_iot_class: Local Push
 ha_codeowners:
   - '@tomerfi'
 ha_domain: switcher_kis
+ha_platforms:
+  - switch
 ---
 
 This `Switcher` integration allows you to control the [Switcher V2 Water Heater](https://www.switcher.co.il/).
@@ -26,9 +28,9 @@ To retrieve your device's details, please follow the instructions [here](https:/
 
 ```yaml
 switcher_kis:
-  phone_id: 'REPLACE_WITH_PHONE_ID'
-  device_id: 'REPLACE_WITH_DEVICE_ID'
-  device_password: 'REPLACE_WITH_DEVICE_PASSWORD'
+  phone_id: "REPLACE_WITH_PHONE_ID"
+  device_id: "REPLACE_WITH_DEVICE_ID"
+  device_password: "REPLACE_WITH_DEVICE_PASSWORD"
 ```
 
 {% configuration %}
@@ -46,21 +48,14 @@ device_password:
   type: string
 {% endconfiguration %}
 
-## Switch State Attributes
+## Sensors
 
-| Attribute          | Type    | Description                                            | Example           |
-| ------------------ | ------- | ------------------------------------------------------ | ----------------- |
-| `friendly_name`    | string  | Defaults to the device's configured name.              | "Switcher Boiler" |
-| `auto_off_set`     | string  | The auto shutdown time limit configured on the device. | "01:30:00"        |
-| `remaining_time`   | string  | Time remaining to shutdown (auto or timer).            | "01:29:41"        |
-| `electric_current` | float   | The electric current in amps.                          | 12.5              |
-| `current_power_w`  | integer | The current power used in watts.                       | 2756              |
-
-<div class='note warning'>
-
-  Please note, the following attributes are not eligible when the device is off and therefore will not appear as state attributes: `remaining_time`, `electric_current`, `current_power_w`.
-
-</div>
+| Sensor Name         | Description                                            | Example           |
+| ------------------- | ------------------------------------------------------ | ----------------- |
+| `Auto Shutdown`     | The auto shutdown time limit configured on the device  | 01:30:00          |
+| `Remaining Time`    | Time remaining to shutdown (auto or timer)             | 01:29:41          |
+| `Electric Current`  | The electric current in amps                           | 12.5 A            |
+| `Power Consumption` | The power consumption in watts                         | 2756 W            |
 
 ## Services
 
@@ -72,8 +67,8 @@ Meaning the device will turn itself off when reaching the auto-off configuration
 
 | Service Field | Mandatory | Description                                                                            | Example                    |
 | ------------- | --------- | -------------------------------------------------------------------------------------- | -------------------------- |
-| `entity_id`   | Yes       | Name of the entity id associated with the integration, used for permission validation. | switch.switcher_kis_boiler |
-| `auto_off`    | Yes       | Time period string containing hours and minutes.                                       | "02:30"                    |
+| `entity_id`   | Yes       | Name of the entity id associated with the integration, used for permission validation  | switch.switcher_kis_boiler |
+| `auto_off`    | Yes       | Time period string containing hours and minutes                                        | "02:30"                    |
 
 ### Service: `switcher_kis.turn_on_with_timer`
 
@@ -83,5 +78,5 @@ Meaning the device will turn itself off when timer ends.
 Note: This does not affect the auto off timer.
 | Service Field | Mandatory | Description                                                                            | Example                    |
 | ------------- | --------- | -------------------------------------------------------------------------------------- | -------------------------- |
-| `entity_id`   | Yes       | Name of the entity id associated with the integration, used for permission validation. | switch.switcher_kis_boiler |
-| `timer_minutes`    | Yes       | Integer containing timer minutes (valid range 1 to 90)                                       | 90                    |
+| `entity_id`   | Yes       | Name of the entity id associated with the integration, used for permission validation  | switch.switcher_kis_boiler |
+| `timer_minutes`    | Yes       | Integer containing timer minutes (valid range 1 to 150)                                      | 90                    |

@@ -9,9 +9,12 @@ ha_quality_scale: internal
 ha_codeowners:
   - '@fabaff'
 ha_domain: time_date
+ha_platforms:
+  - sensor
 ---
 
-The time and date (`time_date`) sensor platform adds one or more sensors to your Home Assistant state machine.
+The time and date (`time_date`) integration allows one to show the current date or time in different formats. All values are based on the timezone which is set in "General Configuration". 
+
 To have these sensors available in your installation, add the following to your `configuration.yaml` file (each option creates a separate sensor that contains appropriate data, e.g.,  `sensor.date` for the `date` option):
 
 ```yaml

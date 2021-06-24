@@ -105,6 +105,15 @@ http:
 
 The [Set up encryption using Let's Encrypt](/blog/2015/12/13/setup-encryption-using-lets-encrypt/) blog post gives you details about the encryption of your traffic using free certificates from [Let's Encrypt](https://letsencrypt.org/).
 
+When using a reverse proxy, you will need to enable the `use_x_forwarded_for` and `trusted_proxies` options. Requests from reverse proxies will be blocked if these options are not set.
+  
+```yaml
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 172.30.33.0/24  # Add the IP address of the proxy server
+```
+
 ## APIs
 
 On top of the `http` integration is a [REST API](https://developers.home-assistant.io/docs/api/rest), [Python API](https://developers.home-assistant.io/docs/api_lib_index) and [WebSocket API](https://developers.home-assistant.io/docs/api/websocket) available.
@@ -125,16 +134,10 @@ If you want to apply additional IP filtering, and automatically ban brute force 
 
 ```yaml
 127.0.0.1:
-  banned_at: '2016-11-16T19:20:03'
+  banned_at: "2016-11-16T19:20:03"
 ```
 
 After a ban is added a Persistent Notification is populated to the Home Assistant frontend.
-
-<div class='note warning'>
-
-Please note, that sources from `trusted_networks` won't be banned automatically.
-
-</div>
 
 ## Hosting files
 

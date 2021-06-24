@@ -10,6 +10,9 @@ ha_iot_class: Local Polling
 ha_codeowners:
   - '@fabaff'
 ha_domain: arduino
+ha_platforms:
+  - sensor
+  - switch
 ---
 
 <div class='note warning'>
@@ -123,7 +126,7 @@ switch:
 
 {% configuration %}
 pins:
-  description: List of of pins to use.
+  description: List of pins to use.
   required: true
   type: map
   keys:

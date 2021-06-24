@@ -12,6 +12,12 @@ ha_quality_scale: platinum
 ha_codeowners:
   - '@frenck'
 ha_domain: wled
+ha_zeroconf: true
+ha_platforms:
+  - light
+  - select
+  - sensor
+  - switch
 ---
 
 [WLED](https://github.com/Aircoookie/WLED) is a fast and feature-rich
@@ -21,24 +27,7 @@ NeoPixel (WS2812B, WS2811, SK6812, APA102, and similar) LED's.
 While Home Assistant supports WLED 0.8.4 and higher, the use of WLED 0.10 and
 newer is recommended to get the optimal experience.
 
-## Configuration
-
-This integration can be configured using the integrations in the
-Home Assistant frontend.
-
-Menu: **Configuration** -> **Integrations**.
-
-In most cases, the WLED devices will be automatically discovered by
-Home Assistant. Those automatically discovered WLED devices are listed
-on the integrations page.
-
-If for some reason (e.g., due to lack of mDNS support on your network),
-the WLED device isn't discovered, it can be added manually.
-
-Click on the `+` sign to add an integration and click on **WLED**.
-After completing the configuration flow, the WLED
-integration will be available.
-
+{% include integrations/config_flow.md %}
 ## Lights
 
 This integration adds the WLED device as a light in Home Assistant.
@@ -62,6 +51,12 @@ strip.
 If WLED has 2 or more segments, each segment gets its own light entity in
 Home Assistant. Additionally, a master light entity is created. This master
 entity controls the strip power and overall brightness applied to all segments.
+
+## Selects
+
+This integration provides selects for the following information from WLED:
+
+- Color palette (per segment, disabled by default).
 
 ## Sensors
 
@@ -90,6 +85,13 @@ Toggles the synchronisation between multiple WLED devices.
 Can be configured on the WLED itself under settings > Sync Interfaces > WLED Broadcast.
 
 [WLED Sync documentation](https://github.com/Aircoookie/WLED/wiki/Sync-WLED-devices-(UDP-Notifier))
+
+{% include integrations/option_flow.md %}
+
+{% configuration_basic %}
+Keep Master Light:
+  description: Keep the master light, even if there is only 1 segment. This ensures the master light is always there, in case you are automating segments to appear and remove dynamically.
+{% endconfiguration_basic %}
 
 ## Services
 
@@ -133,8 +135,9 @@ You can automate changing the effect using a service call like this:
 
 ```yaml
 service: wled.effect
-data:
+target:
   entity_id: light.wled
+data:
   effect: "{{ state_attr('light.wled', 'effect_list') | random }}"
 ```
 
@@ -160,8 +163,9 @@ In this case (using WLED v0.11.0) there are 54 palettes, so the following servic
 
 ```yaml
 service: wled.effect
-data:
+target:
   entity_id: light.wled
+data:
   palette: "{{ range(0,53) | random }}"
 ```
 

@@ -11,7 +11,7 @@ To add the Entities card to your user interface, click the Lovelace menu (three 
 {% configuration %}
 type:
   required: true
-  description: entities
+  description: "`entities`"
   type: string
 entities:
   required: true
@@ -19,11 +19,11 @@ entities:
   type: list
 title:
   required: false
-  description: The card title.
+  description: Card title.
   type: string
 icon:
   required: false
-  description: An icon to display to the left of the title
+  description: An icon to display to the left of the title.
   type: string
 show_header_toggle:
   required: false
@@ -32,11 +32,11 @@ show_header_toggle:
   default: true
 theme:
   required: false
-  description: Set to any theme within `themes.yaml`.
+  description: Override the used theme for this card with any loaded theme. For more information about themes, see the [frontend documentation](/integrations/frontend/).
   type: string
 state_color:
   required: false
-  description: Set to `true` to have icons colored when entity is active
+  description: Set to `true` to have icons colored when entity is active.
   type: boolean
   default: false
 header:
@@ -51,7 +51,7 @@ footer:
 
 ## Options For Entities
 
-If you define entities as objects instead of strings (by adding `entity:` before entity ID), you can add more customization and configuration:
+If you define entities as objects instead of strings (by adding `entity:` before entity ID), you can add more customization and configuration.
 
 {% configuration %}
 entity:
@@ -82,34 +82,26 @@ format:
   required: false
   description: "How the state should be formatted. Currently only used for timestamp sensors. Valid values are: `relative`, `total`, `date`, `time` and `datetime`."
   type: string
-header:
-  required: false
-  description: Header widget to render. See [header documentation](/lovelace/header-footer/).
-  type: map
-footer:
-  required: false
-  description: Footer widget to render. See [footer documentation](/lovelace/header-footer/).
-  type: map
 action_name:
   required: false
-  description: Button label. (Only applies to `script` and `scene` rows)
+  description: Button label (only applies to `script` and `scene` rows).
   type: string
 state_color:
   required: false
-  description: Set to `true` to have icons colored when entity is active
+  description: Set to `true` to have icons colored when entity is active.
   type: boolean
   default: false
 tap_action:
   required: false
-  description: Action taken on card tap. See [action documentation](/lovelace/actions/#tap-action).
+  description: Action taken on row tap. See [action documentation](/lovelace/actions/#tap-action).
   type: map
 hold_action:
   required: false
-  description: Action taken on card tap and hold. See [action documentation](/lovelace/actions/#hold-action).
+  description: Action taken on row tap and hold. See [action documentation](/lovelace/actions/#hold-action).
   type: map
 double_tap_action:
   required: false
-  description: Action taken on card double tap. See [action documentation](/lovelace/actions/#double-tap-action).
+  description: Action taken on row double tap. See [action documentation](/lovelace/actions/#double-tap-action).
   type: map
 {% endconfiguration %}
 
@@ -117,20 +109,60 @@ double_tap_action:
 
 Rather than only displaying an entity's state as a text output, the Entities card supports multiple special rows for buttons, attributes, web links, dividers and sections, etc.
 
+### Attribute
+
+{% configuration %}
+type:
+  required: true
+  description: "`attribute`"
+  type: string
+entity:
+  required: true
+  description: Entity ID.
+  type: string
+attribute:
+  required: true
+  description: Attribute to display from the entity.
+  type: string
+prefix:
+  required: false
+  description: Text before entity state.
+  type: string
+suffix:
+  required: false
+  description: Text after entity state.
+  type: string
+name:
+  required: false
+  description: Overwrites friendly entity name.
+  type: string
+format:
+  required: false
+  description: "How the attribute value should be formatted. Currently only supported for timestamp attributes. Valid values are: `relative`, `total`, `date`, `time` and `datetime`."
+  type: string
+{% endconfiguration %}
+
 ### Button
+
+Row with an (optional) icon, label and a single text button at the end of the row that can trigger a defined action.
 
 {% configuration %}
 type:
   required: true
   description: "`button`"
   type: string
-name:
-  required: true
-  description: Main Label.
+entity:
+  required: false
+  description: "Entity ID. Either `entity` or `name` (or both) needs to be provided."
   type: string
+name:
+  required: false
+  description: "Row label. Either `entity` or `name` (or both) needs to be provided."
+  type: string
+  default: "Friendly name of `entity` if specified."
 icon:
   required: false
-  description: An icon to display to the left of the label.
+  description: An icon to display to the left of the main label.
   type: string
 action_name:
   required: false
@@ -139,16 +171,71 @@ action_name:
   default: "`Run`"
 tap_action:
   required: true
-  description: Action taken on card tap. See [action documentation](/lovelace/actions/#tap-action).
+  description: Action taken on button tap. See [action documentation](/lovelace/actions/#tap-action).
   type: map
 hold_action:
   required: false
-  description: Action taken on card tap and hold. See [action documentation](/lovelace/actions/#hold-action).
+  description: Action taken on button tap and hold. See [action documentation](/lovelace/actions/#hold-action).
   type: map
 double_tap_action:
   required: false
-  description: Action taken on card double tap. See [action documentation](/lovelace/actions/#double-tap-action).
+  description: Action taken on button double tap. See [action documentation](/lovelace/actions/#double-tap-action).
   type: map
+{% endconfiguration %}
+
+### Buttons
+
+Multiple buttons displayed in a single row next to each other. See examples further below.
+
+{% configuration %}
+type:
+  required: true
+  description: "`buttons`"
+  type: string
+entities:
+  required: true
+  description: A list of entities to show. Each entry is either an entity ID or a map.
+  type: list
+  keys:
+    entity:
+      required: true
+      description: Entity ID.
+      type: string
+    icon:
+      required: false
+      description: Override the entity icon.
+      type: string
+    image:
+      required: false
+      description: Override the entity image.
+      type: string
+    name:
+      required: false
+      description: Override the friendly entity name.
+      type: string
+      default: Entity name
+    show_name:
+      required: false
+      description: If false, the button name is not shown.
+      type: boolean
+      default: "true"
+    show_icon:
+      required: false
+      description: If false, the icon is not shown.
+      type: boolean
+      default: "true"
+    tap_action:
+      required: false
+      description: Action taken on button tap. See [action documentation](/lovelace/actions/#tap-action).
+      type: map
+    hold_action:
+      required: false
+      description: Action taken on button tap and hold. See [action documentation](/lovelace/actions/#hold-action).
+      type: map
+    double_tap_action:
+      required: false
+      description: Action taken on button double tap. See [action documentation](/lovelace/actions/#double-tap-action).
+      type: map
 {% endconfiguration %}
 
 ### Cast
@@ -170,12 +257,12 @@ view:
   type: string
 name:
   required: false
-  description: Name to show in the row
+  description: Name to show in the row.
   type: string
   default: Home Assistant Cast
 icon:
   required: false
-  description: Icon to use
+  description: Icon to use.
   type: string
   default: "`hass:television`"
 hide_if_unavailable:
@@ -244,7 +331,7 @@ type:
   type: string
 label:
   required: false
-  description: Section label
+  description: Section label.
   type: string
 {% endconfiguration %}
 
@@ -257,79 +344,28 @@ type:
   type: string
 url:
   required: true
-  description: "Website URL (or internal URL e.g., `/hassio/dashboard` or `/panel_custom_name`)"
+  description: "Website URL (or internal URL e.g., `/hassio/dashboard` or `/panel_custom_name`)."
   type: string
 name:
   required: false
-  description: Link label
+  description: Link label.
   type: string
   default: URL path
 icon:
   required: false
-  description: "Icon to display (e.g., `mdi:home`)"
+  description: "Icon to display (e.g., `mdi:home`)."
   type: string
   default: "`mdi:link`"
-{% endconfiguration %}
-
-### Buttons
-
-Multiple buttons displayed in a single row next to each other. See examples further below.
-
-{% configuration %}
-type:
-  required: true
-  description: "`buttons`"
-  type: string
-entities:
-  required: true
-  description: A list of entities to show. Each entry is either an entity ID or a map.
-  type: list
-  keys:
-    entity:
-      required: true
-      description: Entity ID
-      type: string
-    icon:
-      required: false
-      description: Override the entity icon.
-      type: string
-    image:
-      required: false
-      description: Override the entity image.
-      type: string
-    name:
-      required: false
-      description: Label for the button
-      type: string
-{% endconfiguration %}
-
-### Attribute
-
-{% configuration %}
-type:
-  required: true
-  description: "`attribute`"
-  type: string
-entity:
-  required: true
-  description: Entity ID
-  type: string
-attribute:
-  required: true
-  description: Attribute to display from the entity.
-  type: string
-prefix:
+new_tab:
   required: false
-  description: Text before entity state.
-  type: string
-suffix:
+  description: Open link in new tab. If link is external URL or a download link, this will automatically be true. Use if internal URL should be opened in new tab.
+  type: boolean
+  default: false
+download:
   required: false
-  description: Text after entity state.
-  type: string
-name:
-  required: false
-  description: Overwrites friendly name.
-  type: string
+  description: Is link a download?
+  type: boolean
+  default: false
 {% endconfiguration %}
 
 ## Examples
@@ -341,7 +377,7 @@ type: entities
 title: Entities card sample
 show_header_toggle: true
 header:
-  image: 'https://www.home-assistant.io/images/lovelace/header-footer/balloons-header.png'
+  image: "https://www.home-assistant.io/images/lovelace/header-footer/balloons-header.png"
   type: picture
 entities:
   - entity: alarm_control_panel.alarm
@@ -354,7 +390,7 @@ entities:
 
 ### Buttons row
 
-Above the divider are regular entity rows, below one of type `buttons`. Note that regular entity rows automatically show the entity name, whereas for buttons you have to explicitely specify a label / name.
+Above the divider are regular entity rows, below one of type `buttons`. Note that regular entity rows automatically show the entity name, whereas for buttons you have to explicitly specify a label / name.
 
 <p class='img'>
 <img src='/images/lovelace/lovelace_entity_row_buttons.jpg' alt='Screenshot of buttons row'>
@@ -391,7 +427,7 @@ entities:
     name: Bed light transition
     action_name: Toggle light
     tap_action:
-      type: call-service
+      action: call-service
       service: light.toggle
       service_data:
         entity_id: light.bed_light
@@ -401,13 +437,13 @@ entities:
     entity: sun.sun
     attribute: elevation
     name: Sun elevation
-    prefix: '~'
+    prefix: "~"
     suffix: Units
   - type: conditional
     conditions:
       - entity: sun.sun
         state: above_horizon
-    row: 
+    row:
       entity: sun.sun
       type: attribute
       attribute: azimuth

@@ -8,9 +8,11 @@ ha_iot_class: Local Polling
 ha_codeowners:
   - '@rolfberkenbosch'
 ha_domain: meteoalarm
+ha_platforms:
+  - binary_sensor
 ---
 
-The `MeteoAlarm` platform allows one to watch for weather alerts in europe from [MeteoAlarm](https://www.meteoalarm.eu) (EUMETNET). To use this binary sensor, you need the two digits of your country and the province name from  [MeteoAlarm](https://www.meteoalarm.eu). Please note that you need to write the exact details from the website with capitals.
+The `MeteoAlarm` platform allows one to watch for weather alerts in europe from [MeteoAlarm](https://www.meteoalarm.org) (EUMETNET). To use this binary sensor, you need the name of your country and the province name from  [MeteoAlarm](https://www.meteoalarm.org). Please note that you need to write the exact details from the website with capitals.
 
 The binary sensor state shows if applicable the warning message. The details are available as attribute.
 
@@ -21,8 +23,8 @@ To enable this binary sensor, add the following lines to your `configuration.yam
 ```yaml
 binary_sensor:
   - platform: meteoalarm
-    country: 'NL'
-    province: 'Groningen'
+    country: "netherlands"
+    province: "Groningen"
 ```
 
 {% configuration %}
@@ -32,7 +34,7 @@ name:
   default: meteoalarm
   type: string
 country:
-  description: The 2 letters of your country
+  description: The fullname of your country in English format (lowercases)
   required: true
   type: string
 province:
@@ -43,7 +45,7 @@ language:
   description: "The 2 letters of your language, please be aware that this is only possible in the current country. So 'ne' is only possible in Netherlands. Possible options are: bu, bs, ce, da, de, ee, en, es, ga, ca, su, fr, gr, he, hr, ma, is, it, li, la, sr, mk, ma, ne, no, po, pt, ro, cp, sv, sl, eu."
   required: false
   type: string
-  default: 'en'
+  default: "en"
 {% endconfiguration %}
 
 
@@ -89,7 +91,7 @@ Below you find an example of an automation.
 
 ```yaml
 automation:
-  - alias: Alert me about weather warnings
+  - alias: "Alert me about weather warnings"
     trigger:
       platform: state
       entity_id: binary_sensor.meteoalarm

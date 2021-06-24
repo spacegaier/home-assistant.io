@@ -12,7 +12,7 @@ The `facebox` image processing platform allows you to detect and recognize faces
 
 ## Setup
 
-Facebox runs in a Docker container and it is recommended that you run this container on a machine with a minimum of 2 GB RAM. On your machine with Docker, run the Facebox container with:
+Facebox runs in a Docker container and it is recommended that you run this container on a x86 machine with a minimum of 2 GB RAM (an ARM version is not available). On your machine with Docker, run the Facebox container with:
 
 ```bash
 MB_KEY="INSERT-YOUR-KEY-HERE"
@@ -99,12 +99,12 @@ Use the `image_processing.detect_face` events to trigger automations, and breako
 
 ```yaml
 - id: '12345'
-  alias: Ringo Starr recognised
+  alias: "Ringo Starr recognised"
   trigger:
     platform: event
     event_type: image_processing.detect_face
     event_data:
-      name: 'Ringo_Starr'
+      name: "Ringo_Starr"
   action:
     service: notify.platform
     data:
@@ -144,7 +144,7 @@ You can use an automation to receive a notification when you train a face:
 
 ```yaml
 - id: '1533703568569'
-  alias: Face taught
+  alias: "Face taught"
   trigger:
   - event_data:
       service: facebox.teach_face
@@ -174,7 +174,7 @@ you can create an automation to receive notifications on Facebox errors:
 
 ```yaml
 - id: '1533703568577'
-  alias: Facebox error
+  alias: "Facebox error"
   trigger:
     platform: event
     event_type: system_log_event
@@ -184,7 +184,7 @@ you can create an automation to receive notifications on Facebox errors:
   action:
   - service: notify.pushbullet
     data_template:
-      message: '{{ trigger.event.data.message }}'
+      message: "{{ trigger.event.data.message }}"
       title: Facebox error
 ```
 

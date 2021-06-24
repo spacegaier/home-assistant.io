@@ -10,6 +10,9 @@ ha_iot_class: Local Polling
 ha_codeowners:
   - '@jardiamj'
 ha_domain: mcp23017
+ha_platforms:
+  - binary_sensor
+  - switch
 ---
 
 The `mcp23017` integration is the base for all related mcp23017 platforms in Home Assistant. There is no setup needed for the integration itself, for the platforms please check their corresponding sections.
@@ -26,7 +29,7 @@ The pin numbers are from 0 to 15 where: 0-7 correspond to port A (A1-A8) and 8-1
 
 ### Configuration
 
-To use the I/O pins of an mcp23017 connected to an I2C bus of your Raspberry Pi as binary sensors, add the following to your `configuration.yaml` file:
+To use the I/O pins of a mcp23017 connected to an I2C bus of your Raspberry Pi as binary sensors, add the following to your `configuration.yaml` file:
 
 ```yaml
 # Example configuration.yaml entry
@@ -84,7 +87,7 @@ The pin numbers are from 0 to 15 where: 0-7 correspond to port A (A1-A8) and 8-1
 
 ### Configuration
 
-To use the I/O pins of an mcp23017 connected to an I2C bus of your Raspberry Pi as switches, add the following to your `configuration.yaml` file:
+To use the I/O pins of a mcp23017 connected to an I2C bus of your Raspberry Pi as switches, add the following to your `configuration.yaml` file:
 
 ```yaml
 # Example configuration.yaml entry

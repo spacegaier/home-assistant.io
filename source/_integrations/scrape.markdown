@@ -8,9 +8,11 @@ ha_iot_class: Cloud Polling
 ha_codeowners:
   - '@fabaff'
 ha_domain: scrape
+ha_platforms:
+  - sensor
 ---
 
-The `scrape` sensor platform is scraping information from websites. The sensor loads a HTML page and gives you the option to search and split out a value. As this is not a full-blown web scraper like [scrapy](https://scrapy.org/), it will most likely only work with simple web pages and it can be time-consuming to get the right section.
+The `scrape` sensor platform is scraping information from websites. The sensor loads an HTML page and gives you the option to search and split out a value. As this is not a full-blown web scraper like [scrapy](https://scrapy.org/), it will most likely only work with simple web pages and it can be time-consuming to get the right section.
 
 To enable this sensor, add the following lines to your `configuration.yaml` file:
 
@@ -126,9 +128,9 @@ sensor:
   - platform: scrape
     resource: http://www.bfs.de/DE/themen/opt/uv/uv-index/prognose/prognose_node.html
     name: Coast Ostsee
-    select: 'p'
+    select: "p"
     index: 19
-    unit_of_measurement: 'UV Index'
+    unit_of_measurement: "UV Index"
 ```
 
 ### IFTTT status
@@ -141,7 +143,7 @@ sensor:
   - platform: scrape
     resource: https://status.ifttt.com/
     name: IFTTT status
-    select: '.component-status'
+    select: ".component-status"
 ```
 
 ### Get the latest podcast episode file URL
@@ -154,7 +156,7 @@ sensor:
   - platform: scrape
     resource: https://hasspodcast.io/feed/podcast
     name: Home Assistant Podcast
-    select: 'enclosure'
+    select: "enclosure"
     index: 1
     attribute: url
 ```
@@ -174,28 +176,6 @@ sensor:
     select: ".elspot-content"
     value_template: '{{ ((value.split(" ")[0]) | replace (",", ".")) }}'
     unit_of_measurement: "öre/kWh"
-```
-
-{% endraw %}
-
-### BOM Weather
-
-The Australian Bureau of Meteorology website returns an error if the User Agent header is not sent.
-
-{% raw %}
-
-```yaml
-# Example configuration.yaml entry
-sensor:
-  - platform: scrape
-    resource: http://www.bom.gov.au/vic/forecasts/melbourne.shtml
-    name: Melbourne Forecast Summary
-    select: ".main .forecast p"
-    value_template: '{{ value | truncate(255) }}'
-    # Request every hour
-    scan_interval: 3600
-    headers:
-      User-Agent: Mozilla/5.0
 ```
 
 {% endraw %}

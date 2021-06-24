@@ -7,7 +7,9 @@ date_formatted: "July 22, 2020"
 author: Franck Nijhof
 author_twitter: frenck
 comments: true
-categories: Release-Notes
+categories:
+- Release-Notes
+- Core
 og_image: /images/blog/2020-07-0.113/social.png
 ---
 
@@ -80,11 +82,13 @@ automation:
         to: "on"
     action:
       - service: light.turn_on
-        entity_id: light.bulb
+        target:
+          entity_id: light.bulb
       - delay:
           seconds: 10
       - service: light.turn_off
-        entity_id: light.bulb
+        target:
+          entity_id: light.bulb
 ```
 
 This automation turns on a light bulb when the button is pressed, and after
@@ -240,14 +244,16 @@ automation:
                 state: "on"
             sequence:
               - service: light.turn_on
-                entity_id: light.bulb
+                target:
+                  entity_id: light.bulb
           - conditions:
               - condition: state
                 entity_id: binary_sensor.button2
                 state: "on"
             sequence:
               - service: light.turn_off
-                entity_id: light.bulb
+                target:
+                  entity_id: light.bulb
         default:
           - service: notify.frenck
             data:
@@ -284,7 +290,8 @@ script:
         count: 10
         sequence:
           - service: light.toggle
-            entity_id: light.bulb
+            target:
+              entity_id: light.bulb
           - delay:
               milliseconds: 500
 ```

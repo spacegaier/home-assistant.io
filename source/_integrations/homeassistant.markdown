@@ -8,7 +8,8 @@ ha_quality_scale: internal
 ha_codeowners:
   - '@home-assistant/core'
 ha_domain: homeassistant
-ha_iot_class:
+ha_platforms:
+  - scene
 ---
 
 The Home Assistant integration provides generic implementations like the generic `homeassistant.turn_on`.
@@ -20,6 +21,16 @@ The `homeassistant` integration provides services for controlling Home Assistant
 ### Service `homeassistant.check_config`
 
 Reads the configuration files and checks them for correctness, but **does not** load them into Home Assistant. Creates a persistent notification and log entry if errors are found.
+
+### Service `homeassistant.reload_config_entry`
+
+Reloads an integration config entry.
+
+| Service data attribute    | Description                                           |
+|---------------------------|-------------------------------------------------------|
+| `entity_id`               | List of entity ids used to reference a config entry.  |
+| `area_id`                 | List of area ids used to reference a config entry.    |
+| `device_id`               | List of device ids used to reference a config entry.  |
 
 ### Service `homeassistant.reload_core_config`
 
@@ -67,7 +78,7 @@ Generic service to toggle devices on/off under any domain. Same usage as the lig
 ```yaml
 action:
   service: homeassistant.toggle
-  data:
+  target:
     entity_id: light.living_room
 ```
 
@@ -84,7 +95,7 @@ Generic service to turn devices on under any domain. Same usage as the light.tur
 ```yaml
 action:
   service: homeassistant.turn_on
-  data:
+  target:
     entity_id: light.living_room
 ```
 
@@ -101,7 +112,7 @@ Generic service to turn devices off under any domain. Same usage as the light.tu
 ```yaml
 action:
   service: homeassistant.turn_off
-  data:
+  target:
     entity_id: light.living_room
 ```
 
@@ -118,7 +129,7 @@ Force one or more entities to update its data rather than wait for the next sche
 ```yaml
 action:
   service: homeassistant.update_entity
-  data:
+  target:
     entity_id:
     - light.living_room
     - switch.coffe_pot

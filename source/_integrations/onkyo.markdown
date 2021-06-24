@@ -6,6 +6,8 @@ ha_category:
 ha_release: 0.17
 ha_iot_class: Local Polling
 ha_domain: onkyo
+ha_platforms:
+  - media_player
 ---
 
 The `onkyo` platform allows you to control a [Onkyo](https://www.onkyo.com), [Integra](http://www.integrahometheater.com)
@@ -23,7 +25,7 @@ media_player:
     host: 192.168.1.2
     name: receiver
     sources:
-      pc: 'HTPC'
+      pc: "HTPC"
 ```
 
  If your receiver has second or third zone’s available, they are displayed as additional media players with the same functionality as the main zone.
@@ -123,11 +125,12 @@ script:
     alias: "Radio 1"
     sequence:
       - service: media_player.turn_on
-        data:
+        target:
           entity_id: media_player.onkyo
       - service: media_player.play_media
-        data:
+        target:
           entity_id: media_player.onkyo
+        data:
           media_content_type: "radio"
           media_content_id: "1"
 ```
